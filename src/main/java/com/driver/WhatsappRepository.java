@@ -162,9 +162,9 @@ public class WhatsappRepository {
         if(userList.get(0)==user)
             throw new Exception("Cannot remove admin");
 
-        List<Message> messageList= userMessageRepo.get(user);
-        for(Message message: messageList)
-            messagesRepo.remove(message.getId(),message);
+//        List<Message> messageList= userMessageRepo.get(user);
+//        for(Message message: messageList)
+//            messagesRepo.remove(message.getId(),message);
 
         userMessageRepo.remove(user,userMessageRepo.get(user));
         usersRepo.remove(user.getMobile(),user);
