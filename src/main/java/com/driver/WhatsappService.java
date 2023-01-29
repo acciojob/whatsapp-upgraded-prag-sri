@@ -66,4 +66,11 @@ public class WhatsappService {
         //If user is removed successfully, return (the updated number of users in the group + the updated number of messages in group + the updated number of overall messages)
         return whatsappRepository.removeUser(user);
     }
+
+    public String findMessage(Date start, Date end, int K) throws Exception{
+        // This is a bonus problem and does not contains any marks
+        // Find the Kth latest message between start and end (excluding start and end)
+        // If the number of messages between given time is less than K, throw "K is greater than the number of messages" exception
+        return whatsappRepository.findMessage(start, end, K);
+    }
 }

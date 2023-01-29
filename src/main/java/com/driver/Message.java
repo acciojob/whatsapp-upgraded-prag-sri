@@ -1,5 +1,6 @@
 package com.driver;
 
+import java.util.Comparator;
 import java.util.Date;
 
 public class Message {
@@ -37,5 +38,12 @@ public class Message {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+}
+
+class CustomComparator implements Comparator<Message> {
+    @Override
+    public int compare(Message m1, Message m2) {
+        return m2.getTimestamp().compareTo(m1.getTimestamp());
     }
 }

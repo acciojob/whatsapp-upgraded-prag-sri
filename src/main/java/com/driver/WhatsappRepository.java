@@ -2,10 +2,7 @@ package com.driver;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class WhatsappRepository {
@@ -185,5 +182,23 @@ public class WhatsappRepository {
 
         return count;
 
+    }
+
+    public String findMessage(Date start, Date end, int K) throws Exception{
+        // This is a bonus problem and does not contains any marks
+        // Find the Kth latest message between start and end (excluding start and end)
+        // If the number of messages between given time is less than K, throw "K is greater than the number of messages" exception
+        List<Message> messages= new ArrayList<>();
+        for(Message m: messagesRepo.values())
+        {
+            if(m.getTimestamp().after(start) && m.getTimestamp().before(end))
+                messages.add(m);
+        }
+        if(messages.size()<K)
+            throw new Exception("K is greater than the number of messages");
+
+        Collections.sort(messages,new CustomComparator());
+
+        return messages.get(K-1).getContent();
     }
 }
