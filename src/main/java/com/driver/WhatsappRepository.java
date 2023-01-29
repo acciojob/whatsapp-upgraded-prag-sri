@@ -162,9 +162,9 @@ public class WhatsappRepository {
         if(userList.get(0)==user)
             throw new Exception("Cannot remove admin");
 
-//        List<Message> messageList= userMessageRepo.get(user);
-//        for(Message message: messageList)
-//            messagesRepo.remove(message.getId(),message);
+        List<Message> messageList= userMessageRepo.get(user);
+        for(Message message: messageList)
+            messagesRepo.remove(message.getId(),message);
 
         userMessageRepo.remove(user,userMessageRepo.get(user));
         usersRepo.remove(user.getMobile(),user);
@@ -173,11 +173,12 @@ public class WhatsappRepository {
         groupsRepo.put(grp,userList);
 
         int msgOfGroup=0;
-        for(User u: userList)
+        for(User u: userMessageRepo.keySet())
         {
-            if(userMessageRepo.containsKey(u))
+            if(userList.contains(u))
             {
-                msgOfGroup+= userMessageRepo.get(u).size();
+                List<Message> messages= userMessageRepo.get(u);
+                msgOfGroup+= messages.size();
             }
         }
         int count= groupsRepo.get(grp).size()+msgOfGroup+messagesRepo.size();
