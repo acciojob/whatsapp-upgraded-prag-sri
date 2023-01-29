@@ -25,7 +25,7 @@ public class WhatsappRepository {
         this.messagesRepo= new HashMap<>();
         this.userMessageRepo= new HashMap<>();
         this.messageId=1;
-        this.count=0;
+        this.count=1;
     }
 
     public String createUser(String mobile, User newUser) throws Exception {
@@ -164,10 +164,10 @@ public class WhatsappRepository {
 
         List<Message> messageList= userMessageRepo.get(user);
         for(Message message: messageList)
-            messagesRepo.remove(message.getId());
+            messagesRepo.remove(message.getId(),message);
 
-        userMessageRepo.remove(user);
-        usersRepo.remove(user.getMobile());
+        userMessageRepo.remove(user,userMessageRepo.get(user));
+        usersRepo.remove(user.getMobile(),user);
 
         userList.remove(user);
         groupsRepo.put(grp,userList);
@@ -180,7 +180,7 @@ public class WhatsappRepository {
                 msgOfGroup+= userMessageRepo.get(u).size();
             }
         }
-        int count= userList.size()+msgOfGroup+messagesRepo.size();
+        int count= groupsRepo.get(grp).size()+msgOfGroup+messagesRepo.size();
 
         return count;
 
