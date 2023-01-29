@@ -17,12 +17,15 @@ public class WhatsappRepository {
 
     private int messageId;
 
+    private int count;
+
     public WhatsappRepository() {
         this.usersRepo= new HashMap<>();
         this.groupsRepo= new HashMap<>();
         this.messagesRepo= new HashMap<>();
         this.userMessageRepo= new HashMap<>();
         this.messageId=1;
+        this.count=0;
     }
 
     public String createUser(String mobile, User newUser) throws Exception {
@@ -43,6 +46,13 @@ public class WhatsappRepository {
 
         //For example: Consider userList1 = {Alex, Bob, Charlie}, userList2 = {Dan, Evan}, userList3 = {Felix, Graham, Hugh}.
         //If createGroup is called for these userLists in the same order, their group names would be "Group 1", "Evan", and "Group 2" respectively.
+        if(newGroup.getNumberOfParticipants()==2)
+            newGroup.setName(users.get(1).getName());
+        else
+        {
+            newGroup.setName("Group "+Integer.toString(count));
+            count++;
+        }
         groupsRepo.put(newGroup,users);
         return newGroup;
     }
@@ -154,10 +164,10 @@ public class WhatsappRepository {
 
         List<Message> messageList= userMessageRepo.get(user);
         for(Message message: messageList)
-            messagesRepo.remove(message);
+            messagesRepo.remove(message.getId());
 
         userMessageRepo.remove(user);
-        usersRepo.remove(user);
+        usersRepo.remove(user.getMobile());
 
         userList.remove(user);
         groupsRepo.put(grp,userList);
@@ -170,7 +180,7 @@ public class WhatsappRepository {
                 msgOfGroup+= userMessageRepo.get(u).size();
             }
         }
-        int count= usersRepo.size()+msgOfGroup+messagesRepo.size();
+        int count= userList.size()+msgOfGroup+messagesRepo.size();
 
         return count;
 

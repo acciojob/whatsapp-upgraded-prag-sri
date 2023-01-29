@@ -11,7 +11,6 @@ public class WhatsappService {
 
     WhatsappRepository whatsappRepository= new WhatsappRepository();
 
-    private int count=0;
 
     public String createUser(String name, String mobile) throws Exception {
         //If the mobile number exists in database, throw "User already exists" exception
@@ -30,15 +29,8 @@ public class WhatsappService {
         //For example: Consider userList1 = {Alex, Bob, Charlie}, userList2 = {Dan, Evan}, userList3 = {Felix, Graham, Hugh}.
         //If createGroup is called for these userLists in the same order, their group names would be "Group 1", "Evan", and "Group 2" respectively.
         int numberOfParticipants= users.size();
-        String groupName= "";
-        if(numberOfParticipants==2)
-            groupName= users.get(1).getName();
-        else
-        {
-            groupName= "Group "+Integer.toString(count);
-            count++;
-        }
-        Group newGroup= new Group(groupName,numberOfParticipants);
+        Group newGroup= new Group();
+        newGroup.setNumberOfParticipants(users.size());
         return whatsappRepository.createGroup(newGroup,users);
     }
 
